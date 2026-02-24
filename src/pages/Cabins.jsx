@@ -19,6 +19,7 @@ function Cabins() {
         <CabinTable />
 
         <Button
+          role="button"
           variation="primary"
           size="medium"
           onClick={() => setShowForm((show) => !show)}
