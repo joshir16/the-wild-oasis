@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCabin } from "../../services/apiCabins";
+
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -11,45 +11,14 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 
-const FormRow2 = styled.div`
-  //   display: grid;
-  //   align-items: center;
-  //   grid-template-columns: 24rem 1fr 1.2fr;
-  //   gap: 2.4rem;
+function CreateCabinForm({ cabinToEdit = {} }) {
+  const { id: editId, ...editValues } = cabinToEdit;
+  const isEditSession = Boolean(editId);
 
-  //   padding: 1.2rem 0;
+  const { register, handleSubmit, reset, getValues, formState } = useForm({
+    defaultValues: isEditSession ? editValues : {},
+  });
 
-  //   &:first-child {
-  //     padding-top: 0;
-  //   }
-
-  //   &:last-child {
-  //     padding-bottom: 0;
-  //   }
-
-  //   &:not(:last-child) {
-  //     border-bottom: 1px solid var(--color-grey-100);
-  //   }
-
-  //   &:has(button) {
-  //     display: flex;
-  //     justify-content: flex-end;
-  //     gap: 1.2rem;
-  //   }
-  //
-`;
-
-const Label = styled.label`
-  font-weight: 500;
-`;
-
-const Error = styled.span`
-  font-size: 1.4rem;
-  color: var(--color-red-700);
-`;
-
-function CreateCabinForm() {
-  const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
   const queryClient = useQueryClient();
 
@@ -146,7 +115,9 @@ function CreateCabinForm() {
         <FileInput
           id="image"
           accept="image/*"
-          {...register("image", { required: "This field is required" })}
+          {...register("image", {
+            required: isEditSession ? false : "This field is required",
+          })}
           disabled={isPending}
         />
       </FormRow>
@@ -157,7 +128,7 @@ function CreateCabinForm() {
           Cancel
         </Button>
         <Button variation="primary" size="medium" disabled={isPending}>
-          Edit cabin
+          {isEditSession ? "Edit cabin" : "Create new Cabin"}
         </Button>
       </FormRow>
     </Form>
