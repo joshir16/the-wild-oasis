@@ -20,7 +20,7 @@ function Cabins() {
 
         <Button
           role="button"
-          variation="primary"
+          $variation="primary"
           size="medium"
           onClick={() => setShowForm((show) => !show)}
         >
