@@ -118,6 +118,7 @@ function CabinRow({ cabin }) {
                   resourceName="cabins"
                   disabled={isDeleting}
                   onConfirm={() => deleteCabin(cabinId)}
+                  closeModal={() => close()}
                 />
               </Modal.Window>
             </Menus.Menu>
