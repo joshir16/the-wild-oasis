@@ -1,7 +1,11 @@
 function Logo() {
   return (
     <div className="text-center">
-      <img src="/logo-light.png" alt="Logo" className="h-24 w-auto" />
+      <img
+        src="src\data\img\logo-light.png"
+        alt="Logo"
+        className="h-24 w-auto"
+      />
     </div>
   );
 }
