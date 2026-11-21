@@ -1,15 +1,27 @@
-import { Button } from "grid-ui";
+import { BrowserRouter, Route, Routes } from "react-router";
+import Dashboard from "./pages/Dashboard";
+import Bookings from "./pages/Bookings";
+import Cabins from "./pages/Cabins";
+import Users from "./pages/Users";
+import Account from "./pages/Account";
+import Settings from "./pages/Settings";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   return (
     <>
-      <h1>Hello World</h1>
-      <Button variant={"primary"}>Click me</Button>
-      <Button variant={"secondary"}>Click me</Button>
-      <Button variant={"outline"}>Click me</Button>
-      <Button variant={"danger"}>Click me</Button>
-      <Button variant={"ghost"}>Click me</Button>
-      <Button variant={"link"}>Click me</Button>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="bookings" element={<Bookings />} />
+          <Route path="cabins" element={<Cabins />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="users" element={<Users />} />
+          <Route path="account" element={<Account />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
