@@ -1,6 +1,6 @@
 function Logo() {
   return (
-    <div className="text-center">
+    <div className="flex items-center justify-center">
       <img src="/logo-light.png" alt="Logo" className="h-24 w-auto" />
     </div>
   );
