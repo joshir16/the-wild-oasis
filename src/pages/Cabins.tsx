@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { getCabins } from "../services/apiCabins";
+import { Input } from "grid-ui";
 
 function Cabins() {
   useEffect(function () {
@@ -10,6 +11,7 @@ function Cabins() {
     <div className="flex justify-between items-center">
       <h1 className="text-3xl font-semibold leading-snug">All cabins</h1>
       <p>TEST</p>
+      <Input />
     </div>
   );
 }
