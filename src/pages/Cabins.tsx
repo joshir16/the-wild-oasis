@@ -1,8 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getCabins } from "../services/apiCabins";
 import CabinTable from "../features/cabins/CabinTable";
+import { Button } from "grid-ui";
+import CreateCabinForm from "../features/cabins/CreateCabinForm";
 
 function Cabins() {
+  const [showForm, setShowForm] = useState(false);
+
   useEffect(function () {
     getCabins().then((data) => console.log(data));
   }, []);
@@ -14,6 +18,11 @@ function Cabins() {
         <p>Filter / Sort</p>
       </div>
       <CabinTable />
+      <Button onClick={() => setShowForm((prev) => !prev)}>
+        Add new Cabin
+      </Button>
+
+      {showForm && <CreateCabinForm />}
     </>
   );
 }
