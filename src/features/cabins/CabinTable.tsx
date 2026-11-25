@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Table from "../../ui/Table";
 import { getCabins } from "../../services/apiCabins";
 import CabinRow from "./CabinRow";
+import { Spinner } from "grid-ui";
 
 export default function CabinTable() {
   const {
@@ -14,7 +15,10 @@ export default function CabinTable() {
   });
   console.log(cabins, error);
 
-  if (isPending) return <p>Spinner...</p>;
+  if (isPending)
+    return (
+      <Spinner className="mx-auto my-12 block" aria-label={"Loading Cabins"} />
+    );
 
   return (
     <>
