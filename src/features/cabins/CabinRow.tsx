@@ -1,17 +1,25 @@
-import { Button } from "grid-ui";
+import { useState } from "react";
 import type { Cabin } from "../../types/types";
-import Table from "../../ui/Table";
-import { formatCurrency } from "../../utils/helpers";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCabin } from "../../services/apiCabins";
+
+import { formatCurrency } from "../../utils/helpers";
+
+import Table from "../../ui/Table";
+import CreateCabinForm from "./CreateCabinForm";
+
+import { Button } from "grid-ui";
+
 import toast from "react-hot-toast";
-import { HiTrash } from "react-icons/hi2";
+import { HiPencil, HiTrash } from "react-icons/hi2";
 
 interface CabinRowProps {
   cabin: Cabin;
 }
 
 function CabinRow({ cabin }: CabinRowProps) {
+  const [showForm, setShowForm] = useState(false);
   const queryClient = useQueryClient();
 
   const { isPending, mutate } = useMutation({
@@ -39,16 +47,32 @@ function CabinRow({ cabin }: CabinRowProps) {
         <Table.Cell>{formatCurrency(cabin.regularPrice)}</Table.Cell>
         <Table.Cell>{formatCurrency(cabin.discount)}</Table.Cell>
         <Table.Cell>
-          <Button
-            variant={"secondary"}
-            size={"icon-sm"}
-            onClick={() => mutate(cabin.id)}
-            disabled={isPending}
-          >
-            <HiTrash />
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant={"secondary"}
+              size={"icon-sm"}
+              onClick={() => setShowForm(!showForm)}
+            >
+              <HiPencil />
+            </Button>
+            <Button
+              variant={"secondary"}
+              size={"icon-sm"}
+              onClick={() => mutate(cabin.id)}
+              disabled={isPending}
+            >
+              <HiTrash />
+            </Button>
+          </div>
         </Table.Cell>
       </Table.Row>
+      {showForm && (
+        <Table.Row>
+          <Table.Cell colSpan={6} className="bg-(--color-grey-50)/50 p-6">
+            <CreateCabinForm cabinToEdit={cabin} />
+          </Table.Cell>
+        </Table.Row>
+      )}
     </>
   );
 }

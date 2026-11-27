@@ -2,7 +2,7 @@ import type { ComponentProps } from "react";
 
 function Table({ className = "", ...props }: ComponentProps<"table">) {
   return (
-    <div className="overflow-x-auto rounded-[7px] border border-(--color-grey-200) bg-(--color-grey-0)">
+    <div className=" rounded-[7px] border border-(--color-grey-200) bg-(--color-grey-0)">
       <table
         className={`w-full border-collapse text-sm ${className}`}
         {...props}
