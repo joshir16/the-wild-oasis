@@ -40,7 +40,7 @@ function TableHead({ className = "", ...props }: ComponentProps<"th">) {
 }
 
 function TableCell({ className = "", ...props }: ComponentProps<"td">) {
-  return <td className={`px-6 py-3.5 align-middle ${className}`} {...props} />;
+  return <td className={`px-6 py-3 align-middle ${className}`} {...props} />;
 }
 
 function TableFooter({ className = "", ...props }: ComponentProps<"tfoot">) {

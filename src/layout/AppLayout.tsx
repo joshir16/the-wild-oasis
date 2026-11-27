@@ -7,8 +7,8 @@ export default function AppLayout() {
     <div className="grid grid-cols-[260px_1fr] grid-rows-[auto_1fr] h-dvh">
       <Header />
       <AppSidebar />
-      <main className="bg-(--color-grey-50) pt-8 px-12 pb-14 overflow-y-auto">
-        <div className="max-w-[120rem] mx-auto flex flex-col gap-4">
+      <main className="bg-(--color-grey-50) pt-4 px-12 pb-8 overflow-y-auto">
+        <div className="max-w-300 mx-auto flex flex-col gap-4">
           <Outlet />
         </div>
       </main>

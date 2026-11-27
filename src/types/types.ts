@@ -8,3 +8,11 @@ export interface Cabin {
   description: string | null;
   image: string;
 }
+
+export type CabinFormValues = Omit<Cabin, "id" | "created_at" | "image"> & {
+  image: FileList | string;
+};
+
+export type NewCabin = Omit<Cabin, "id" | "created_at" | "image"> & {
+  image: File | string;
+};

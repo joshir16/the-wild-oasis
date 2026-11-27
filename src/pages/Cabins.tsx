@@ -18,7 +18,7 @@ function Cabins() {
         <p>Filter / Sort</p>
       </div>
       <CabinTable />
-      <Button onClick={() => setShowForm((prev) => !prev)}>
+      <Button onClick={() => setShowForm((prev) => !prev)} className="mr-auto">
         Add new Cabin
       </Button>
 

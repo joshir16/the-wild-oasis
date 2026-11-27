@@ -5,15 +5,10 @@ import CabinRow from "./CabinRow";
 import { Spinner } from "grid-ui";
 
 export default function CabinTable() {
-  const {
-    isPending,
-    data: cabins = [],
-    error,
-  } = useQuery({
+  const { isPending, data: cabins = [] } = useQuery({
     queryKey: ["cabins"],
     queryFn: getCabins,
   });
-  console.log(cabins, error);
 
   if (isPending)
     return (
