@@ -1,14 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import Table from "../../ui/Table";
-import { getCabins } from "../../services/apiCabins";
 import CabinRow from "./CabinRow";
 import { Spinner } from "grid-ui";
+import { useCabins } from "./useCabins";
 
 export default function CabinTable() {
-  const { isPending, data: cabins = [] } = useQuery({
-    queryKey: ["cabins"],
-    queryFn: getCabins,
-  });
+  const { isPending, cabins } = useCabins();
 
   if (isPending)
     return (

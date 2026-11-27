@@ -1,18 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createEditCabin } from "../../services/apiCabins";
-import type { Cabin, CabinFormValues, NewCabin } from "../../types/types";
-import toast from "react-hot-toast";
+import type { Cabin, CabinFormValues } from "../../types/types";
 
 import { Button, FileInput, Input, Textarea } from "grid-ui";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
-
-type EditCabinArgs = {
-  newCabinData: NewCabin;
-  id: number;
-};
+import { useCreateCabin } from "./useCreateCabin";
+import { useEditCabin } from "./useEditCabin";
 
 function CreateCabinForm({ cabinToEdit }: { cabinToEdit?: Cabin }) {
   const { id: editId, ...editValues } = cabinToEdit ?? {};
@@ -26,28 +20,9 @@ function CreateCabinForm({ cabinToEdit }: { cabinToEdit?: Cabin }) {
   const { errors } = formState;
   console.log(errors);
 
-  const queryClient = useQueryClient();
+  const { isCreating, createCabin } = useCreateCabin();
 
-  const { mutate: createCabin, isPending: isCreating } = useMutation({
-    mutationFn: (newCabin: NewCabin) => createEditCabin(newCabin),
-    onSuccess: (data) => {
-      toast.success("New cabin successfully created");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      reset(data);
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
-  const { mutate: editCabin, isPending: isEditing } = useMutation({
-    mutationFn: ({ newCabinData, id }: EditCabinArgs) =>
-      createEditCabin(newCabinData, id),
-    onSuccess: (data) => {
-      toast.success("Cabin successfully edited");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      reset(data);
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  const { isEditing, editCabin } = useEditCabin();
 
   const isWorking = isCreating || isEditing;
 
@@ -55,9 +30,19 @@ function CreateCabinForm({ cabinToEdit }: { cabinToEdit?: Cabin }) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
 
     if (isEditSession && editId) {
-      editCabin({ newCabinData: { ...data, image }, id: editId });
+      editCabin(
+        { newCabinData: { ...data, image }, id: editId },
+        {
+          onSuccess: () => reset(data),
+        },
+      );
     } else {
-      createCabin({ ...data, image });
+      createCabin(
+        { ...data, image },
+        {
+          onSuccess: () => reset(data),
+        },
+      );
     }
   }
 

@@ -1,9 +1,6 @@
 import { useState } from "react";
 import type { Cabin } from "../../types/types";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabin } from "../../services/apiCabins";
-
 import { formatCurrency } from "../../utils/helpers";
 
 import Table from "../../ui/Table";
@@ -11,8 +8,8 @@ import CreateCabinForm from "./CreateCabinForm";
 
 import { Button } from "grid-ui";
 
-import toast from "react-hot-toast";
 import { HiPencil, HiTrash } from "react-icons/hi2";
+import useDeleteCabin from "./useDeleteCabin";
 
 interface CabinRowProps {
   cabin: Cabin;
@@ -20,18 +17,8 @@ interface CabinRowProps {
 
 function CabinRow({ cabin }: CabinRowProps) {
   const [showForm, setShowForm] = useState(false);
-  const queryClient = useQueryClient();
 
-  const { isPending, mutate } = useMutation({
-    mutationFn: deleteCabin,
-    onSuccess: () => {
-      toast.success("Cabin successfully deleted");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  const { isDeleting, deleteCabin } = useDeleteCabin();
 
   return (
     <>
@@ -45,7 +32,13 @@ function CabinRow({ cabin }: CabinRowProps) {
         <Table.Cell>{cabin.name}</Table.Cell>
         <Table.Cell>Fits up to {cabin.maxCapacity} guests</Table.Cell>
         <Table.Cell>{formatCurrency(cabin.regularPrice)}</Table.Cell>
-        <Table.Cell>{formatCurrency(cabin.discount)}</Table.Cell>
+        <Table.Cell>
+          {cabin.discount ? (
+            formatCurrency(cabin.discount)
+          ) : (
+            <span>&mdash;</span>
+          )}
+        </Table.Cell>
         <Table.Cell>
           <div className="flex gap-2">
             <Button
@@ -58,8 +51,8 @@ function CabinRow({ cabin }: CabinRowProps) {
             <Button
               variant={"secondary"}
               size={"icon-sm"}
-              onClick={() => mutate(cabin.id)}
-              disabled={isPending}
+              onClick={() => deleteCabin(cabin.id)}
+              disabled={isDeleting}
             >
               <HiTrash />
             </Button>
