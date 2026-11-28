@@ -10,7 +10,13 @@ function UpdateSettingsForm() {
   const { isLoading, data } = useSettings();
   const { isUpdating, updateSetting } = useUpdateSetting();
 
-  if (isLoading) return <Spinner />;
+  if (isLoading)
+    return (
+      <Spinner
+        className="mx-auto my-12 block"
+        aria-label={"Loading Settings"}
+      />
+    );
 
   const {
     minBookingLength,
