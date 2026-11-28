@@ -8,8 +8,9 @@ import CreateCabinForm from "./CreateCabinForm";
 
 import { Button } from "grid-ui";
 
-import { HiPencil, HiTrash } from "react-icons/hi2";
+import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import useDeleteCabin from "./useDeleteCabin";
+import { useCreateCabin } from "./useCreateCabin";
 
 interface CabinRowProps {
   cabin: Cabin;
@@ -17,30 +18,53 @@ interface CabinRowProps {
 
 function CabinRow({ cabin }: CabinRowProps) {
   const [showForm, setShowForm] = useState(false);
-
   const { isDeleting, deleteCabin } = useDeleteCabin();
+  const { isCreating, createCabin } = useCreateCabin();
+
+  const {
+    name,
+    id: cabinId,
+    maxCapacity,
+    regularPrice,
+    discount,
+    image,
+    description,
+  } = cabin;
+
+  function handleDuplicate() {
+    createCabin({
+      name: `Copy of ${name}`,
+      maxCapacity,
+      regularPrice,
+      discount,
+      image,
+      description,
+    });
+  }
 
   return (
     <>
       <Table.Row>
         <Table.Cell>
-          <img
-            className="w-16 object-cover object-center aspect-3/2"
-            src={cabin.image}
-          />
+          <img className="w-16 object-cover object-center " src={image} />
         </Table.Cell>
-        <Table.Cell>{cabin.name}</Table.Cell>
-        <Table.Cell>Fits up to {cabin.maxCapacity} guests</Table.Cell>
-        <Table.Cell>{formatCurrency(cabin.regularPrice)}</Table.Cell>
+        <Table.Cell>{name}</Table.Cell>
+        <Table.Cell>Fits up to {maxCapacity} guests</Table.Cell>
+        <Table.Cell>{formatCurrency(regularPrice)}</Table.Cell>
         <Table.Cell>
-          {cabin.discount ? (
-            formatCurrency(cabin.discount)
-          ) : (
-            <span>&mdash;</span>
-          )}
+          {discount ? formatCurrency(discount) : <span>&mdash;</span>}
         </Table.Cell>
         <Table.Cell>
           <div className="flex gap-2">
+            <Button
+              variant={"secondary"}
+              size={"icon-sm"}
+              disabled={isCreating}
+              onClick={handleDuplicate}
+            >
+              <HiSquare2Stack />
+            </Button>
+
             <Button
               variant={"secondary"}
               size={"icon-sm"}
@@ -51,7 +75,7 @@ function CabinRow({ cabin }: CabinRowProps) {
             <Button
               variant={"secondary"}
               size={"icon-sm"}
-              onClick={() => deleteCabin(cabin.id)}
+              onClick={() => deleteCabin(cabinId)}
               disabled={isDeleting}
             >
               <HiTrash />

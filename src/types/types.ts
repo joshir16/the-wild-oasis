@@ -16,3 +16,15 @@ export type CabinFormValues = Omit<Cabin, "id" | "created_at" | "image"> & {
 export type NewCabin = Omit<Cabin, "id" | "created_at" | "image"> & {
   image: File | string;
 };
+
+export interface Settings {
+  id: number;
+  created_at: string;
+  minBookingLength: number;
+  maxBookingLength: number;
+  maxGuestPerBooking: number;
+  breakfastPrice: number;
+}
+
+export type SettingsFormValues = Omit<Settings, "id" | "created_at">;
+export type UpdateSettingPayload = Partial<Omit<Settings, "id" | "created_at">>;
